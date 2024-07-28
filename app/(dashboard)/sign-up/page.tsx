@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import React, { useState } from "react";
 
 function page() {
-  const [step, setStep] = useState<number>(4);
+  const [step, setStep] = useState<number>(1);
   console.log(step);
 
   const handleNext = () => {

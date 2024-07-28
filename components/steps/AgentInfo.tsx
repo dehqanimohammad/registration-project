@@ -180,7 +180,7 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
             },
           })}
           placeholder="آدرس را وارد کنید"
-          className="w-full border border-gray-200 bg-gray-100 rounded-md px-2 py-2 mt-2"
+          className="w-full border border-gray-200 bg-gray-100 rounded-md px-2 py-2 mt-3 h-28"
         />
       </form>
     </div>
