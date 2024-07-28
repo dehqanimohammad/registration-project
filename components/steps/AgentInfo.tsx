@@ -11,6 +11,7 @@ import { url } from "inspector";
 interface AgentInfoFormData {
   address: string;
   agency_type: string;
+  agency_type_name?: string;
   agent_code: number;
   city_code: number;
   county: string;
@@ -35,7 +36,6 @@ interface FinalResultInformation {
 const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
   onLoginSuccess,
 }) => {
-  const [selectedProvince, setSelectedProvince] = useState({});
   const [allprovinces, setAllProvinces] = useState([]);
   const [cities, setCities] = useState([]);
   const [branches, setBranches] = useState([]);
@@ -67,6 +67,9 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
   const watchedAgencyCode = watch("agent_code");
   const watchedProvince = watch("province");
   const watchedCounty = watch("county");
+  const watchedAgencyType = watch("agency_type");
+
+  console.log(watchedAgencyType);
 
   useEffect(() => {
     if (watchedAgencyCode >= 1) {
@@ -88,7 +91,7 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
     }
   }, [watchedAgencyCode]);
 
-  const onSubmit = async (data: AgentInfoFormData, sendData: any) => {
+  const onSubmit = async (data: AgentInfoFormData) => {
     dispatch(
       setAgencyData({
         address: data.address,
@@ -101,18 +104,12 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
         province: data.province,
       })
     );
-
-    sendData(finalUserInfo);
-  };
-
-  const sendData = async (finalUserInfo: FinalResultInformation) => {
-    const result = await dispatch(login(finalUserInfo));
-    console.log(result);
-
+    const result = await dispatch(login(data));
     if (login.fulfilled.match(result)) {
       onLoginSuccess();
     }
   };
+
   useEffect(() => {
     if (watchedProvince >= 1) {
       const getCities = async (watchedProvince: number) => {
@@ -127,8 +124,6 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
       getCities(watchedProvince);
     }
   }, [watchedProvince]);
-
-  console.log(watchedCounty);
 
   useEffect(() => {
     if (watchedCounty !== undefined) {
@@ -148,7 +143,7 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
   }, [watchedCounty]);
 
   return (
-    <div className="p-3 overflow-auto relative w-full">
+    <div className="p-3 overflow-auto  w-full">
       <form className="flex-flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
         <input
           placeholder="کد نمایندگی"
@@ -163,7 +158,6 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
           </span>
         )}
         {isAgencyCodeUsed === true && <span>&#9989;</span>}
-        <input />
         <div className="flex flex-col">
           <select
             className="border border-gray-300 rounded-md py-1 px-1"
@@ -261,7 +255,6 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
               {errors.city_code.message}
             </span>
           )}
-          <input />
           <input
             placeholder="شماره ثابت "
             id="phone"
@@ -273,16 +266,63 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
                 message: "فرمت اشتباه",
               },
             })}
-            className="border border-gray-300 rounded-lg p-2"
+            className="border border-gray-300 rounded-lg p-2 mt-1"
           />
           {errors.phone && (
             <span className="text-red-500 text-sm mt-1">
               {errors.phone.message}
             </span>
           )}
-          <input />
         </div>
-        <div></div>
+        <div className="flex">
+          <label className="flex mt-1" htmlFor="haghighi">
+            <input
+              className="mx-2 items-center justify-center"
+              value="حقیقی"
+              type="radio"
+              id="haghighi"
+              {...register("agency_type", {
+                required: "انتخاب کنید",
+              })}
+            />
+            حقیقی
+          </label>
+          <label className="flex mt-1" htmlFor="haghighi">
+            <input
+              className="mx-2 items-center justify-center"
+              value="حقوقی"
+              type="radio"
+              id="hoghoghi"
+              {...register("agency_type", {
+                required: "انتخاب کنید",
+              })}
+            />
+            حقوقی
+          </label>
+        </div>
+        {watchedAgencyType === "حقوقی" && (
+          <input
+            placeholder="نام نمایندگی "
+            id="agencyname"
+            type="text"
+            {...register("agency_type_name", {
+              required: "نام نمایندگی را وارد کنید",
+            })}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+          />
+        )}
+        {errors.agency_type && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.agency_type.message}
+          </p>
+        )}
+        <button
+          type="submit"
+          className="justify-center  bottom-5 w-11/12 mx-auto flex py-2 mt-1 px-4 bg-primary-color text-white font-semibold rounded-md shadow-md hover:bg-gray-700 "
+          disabled={isLoading}
+        >
+          {isLoading ? "در حال ارسال" : "مرحله بعد"}
+        </button>
       </form>
     </div>
   );
