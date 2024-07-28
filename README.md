@@ -8,7 +8,7 @@ React hook form: for Form handling <br />
 Getting Started<br />
 Clone the repository:
 
-git clone https://github.com/dehqanimohammad/sanaap-task.git
+git clone https://github.com/dehqanimohammad/registration-project.git
 
 Install dependencies:
 
