@@ -148,8 +148,8 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
   }, [watchedCounty]);
 
   return (
-    <div className="p-3 overflow-auto relative">
-      <form className="flex-flex-col" onSubmit={handleSubmit(onSubmit)}>
+    <div className="p-3 overflow-auto relative w-full">
+      <form className="flex-flex-col w-full" onSubmit={handleSubmit(onSubmit)}>
         <input
           placeholder="کد نمایندگی"
           id="agent_code"
@@ -177,6 +177,11 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
               </option>
             ))}
           </select>
+          {errors.province && (
+            <span className="text-red-500 text-sm mt-1">
+              {errors.province.message}
+            </span>
+          )}
           <select
             className={` mt-4 border border-gray-300 rounded-md py-1 px-1 ${
               cities.length === 0 ? "bg-gray-400" : ""
@@ -192,6 +197,11 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
               </option>
             ))}
           </select>
+          {errors.county && (
+            <span className="text-red-500 text-sm mt-1">
+              {errors.county.message}
+            </span>
+          )}
         </div>
         <textarea
           id="address"
@@ -205,6 +215,11 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
           placeholder="آدرس را وارد کنید"
           className="w-full border border-gray-200 bg-gray-100 rounded-md px-2 py-2 mt-3 h-28"
         />
+        {errors.address && (
+          <span className="text-red-500 text-sm mt-1">
+            {errors.address.message}
+          </span>
+        )}
         <select
           className={` w-full mt-4 border border-gray-300 rounded-md py-1 px-1 ${
             branches.length === 0 ? "bg-gray-400" : ""
@@ -222,6 +237,11 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
             </option>
           ))}
         </select>
+        {errors.insurance_branch && (
+          <span className="text-red-500 text-sm mt-1">
+            {errors.insurance_branch.message}
+          </span>
+        )}
         <div className="flex flex-col mt-3 p-3">
           <input
             placeholder="کد استان"
@@ -236,7 +256,11 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
             })}
             className="border border-gray-300 rounded-lg p-2"
           />
-
+          {errors.city_code && (
+            <span className="text-red-500 text-sm mt-1">
+              {errors.city_code.message}
+            </span>
+          )}
           <input />
           <input
             placeholder="شماره ثابت "
@@ -251,8 +275,14 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
             })}
             className="border border-gray-300 rounded-lg p-2"
           />
+          {errors.phone && (
+            <span className="text-red-500 text-sm mt-1">
+              {errors.phone.message}
+            </span>
+          )}
           <input />
         </div>
+        <div></div>
       </form>
     </div>
   );
