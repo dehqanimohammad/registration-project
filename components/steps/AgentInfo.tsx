@@ -65,7 +65,7 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
   const watchedProvince = watch("province");
 
   useEffect(() => {
-    if (watchedAgencyCode !== null) {
+    if (watchedAgencyCode >= 1) {
       const checkAgency = async (watchedAgencyCode: number) => {
         try {
           const response = await axios.post(
@@ -180,7 +180,7 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
             },
           })}
           placeholder="آدرس را وارد کنید"
-          className="w-full border-gray-200 bg-gray-100 rounded-md px-2 py-2 mt-2"
+          className="w-full border border-gray-200 bg-gray-100 rounded-md px-2 py-2 mt-2"
         />
       </form>
     </div>
