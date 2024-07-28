@@ -113,50 +113,75 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
       onLoginSuccess();
     }
   };
+  console.log(typeof watchedProvince, watchedProvince);
   useEffect(() => {
-    const getCities = async (watchedProvince: number) => {
-      if (watchedProvince !== undefined) {
+    if (watchedProvince >= 1) {
+      const getCities = async (watchedProvince: number) => {
         const URL =
-          "https://stage-api.sanaap.co/base/counties_wop/" +
+          "https://stage-api.sanaap.co/base/counties_wop/?" +
           "province=" +
-          String(watchedProvince);
+          watchedProvince;
         const response = await axios.get(URL); //request doesnt work
-        console.log(response);
         setCities(response.data);
-        console.log(URL);
-      }
-    };
-    getCities(watchedProvince);
+      };
+
+      getCities(watchedProvince);
+    }
   }, [watchedProvince]);
 
-  // console.log(cities);
+  console.log(cities);
 
   return (
     <div className="p-3 overflow-auto">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className="flex-flex-col" onSubmit={handleSubmit(onSubmit)}>
         <input
           placeholder="کد نمایندگی"
           id="agent_code"
           type="text"
           {...register("agent_code", { required: "کد را وارد کنید" })}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+          className="my-2 px-1 w-full py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
         />
         {errors.agent_code && (
-          <p className="text-red-500 text-sm mt-1">
+          <span className="text-red-500 text-sm mt-1">
             {errors.agent_code.message}
-          </p>
+          </span>
         )}
-        {isAgencyCodeUsed === true && <p>کد را میتوان استفاده کرد</p>}
+        {isAgencyCodeUsed === true && <span>&#9989;</span>}
         <input />
-        <select
-          id="provinces"
-          {...register("province", { required: "استان انتخاب کنید لطفا" })}
-        >
-          <option value={""}>استان</option>
-          {allprovinces.map((option: any, index) => (
-            <option value={option.id}>{option.name}</option>
-          ))}
-        </select>
+        <div className="flex flex-col">
+          <select
+            id="provinces"
+            {...register("province", { required: "استان انتخاب کنید لطفا" })}
+          >
+            <option value={""}>استان</option>
+            {allprovinces.map((option: any, index) => (
+              <option value={option.id}>{option.name}</option>
+            ))}
+          </select>
+          <select
+            disabled={cities.length === 0}
+            className="mt-4"
+            id="city"
+            {...register("county", { required: "شهرستان را انتخاب کنید لطفا" })}
+          >
+            <option value={""}>شهر</option>
+            {cities.map((option: any, index) => (
+              <option value={option.id}>{option.name}</option>
+            ))}
+          </select>
+        </div>
+        <textarea
+          id="address"
+          {...register(`address`, {
+            required: "لطفا آدرس را وارد کنید",
+            minLength: {
+              value: 10,
+              message: "حداقل ده کاراکتر",
+            },
+          })}
+          placeholder="آدرس را وارد کنید"
+          className="w-full border-gray-200 bg-gray-100 rounded-md px-2 py-2 mt-2"
+        />
       </form>
     </div>
   );
