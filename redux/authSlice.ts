@@ -127,9 +127,10 @@ const authSlice = createSlice({
         province: number;
       }>
     ) {
+      state.userInfo.agent_code = action.payload.agent_code;
       state.userInfo.address = action.payload.address;
       state.userInfo.agency_type = action.payload.agency_type;
-      state.userInfo.agent_code = action.payload.city_code;
+      state.userInfo.city_code = action.payload.city_code;
       state.userInfo.county = action.payload.county;
       state.userInfo.insurance_branch = action.payload.insurance_branch;
       state.userInfo.phone = action.payload.phone;

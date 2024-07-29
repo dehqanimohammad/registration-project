@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { setAgencyData, login } from "@/redux/authSlice";
 import axios from "axios";
-import { url } from "inspector";
 
 interface AgentInfoFormData {
   address: string;
@@ -238,17 +237,17 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
         )}
         <div className="flex flex-col mt-3 p-3">
           <input
-            placeholder="کد استان"
+            placeholder="شماره ثابت "
             id="city_code"
             type="text"
             {...register("city_code", {
-              required: "کد شهر را وارد کنید",
+              required: "شماره کد شهر را وارد کنید",
               pattern: {
                 value: /^[0-9]{3}$/,
                 message: "فرمت اشتباه",
               },
             })}
-            className="border border-gray-300 rounded-lg p-2"
+            className="border border-gray-300 rounded-lg p-2 mt-1"
           />
           {errors.city_code && (
             <span className="text-red-500 text-sm mt-1">
