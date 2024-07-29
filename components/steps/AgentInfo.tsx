@@ -43,7 +43,9 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
 
   const isLoading = useSelector((state: RootState) => state.auth.isLoading);
   const finalUserInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const rootState = useSelector((state: RootState) => state.auth);
 
+  console.log(rootState);
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
@@ -67,8 +69,6 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
   const watchedProvince = watch("province");
   const watchedCounty = watch("county");
   const watchedAgencyType = watch("agency_type");
-
-  console.log(watchedAgencyType);
 
   useEffect(() => {
     if (watchedAgencyCode >= 1) {
@@ -103,7 +103,22 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
         province: data.province,
       })
     );
-    const result = await dispatch(login(data));
+
+    // console.log("latestdata", {
+    //   ...data,
+    //   phone_number: finalUserInfo.phone_number,
+    //   first_name: finalUserInfo.first_name,
+    //   last_name: finalUserInfo.last_name,
+    // });
+
+    const result = await dispatch(
+      login({
+        ...data,
+        phone_number: finalUserInfo.phone_number,
+        first_name: finalUserInfo.first_name,
+        last_name: finalUserInfo.last_name,
+      })
+    );
     if (login.fulfilled.match(result)) {
       onLoginSuccess();
     }
@@ -135,7 +150,6 @@ const AgentInfo: React.FC<{ onLoginSuccess: () => void }> = ({
           watchedProvince; //in docs it says insurance=DEY && name=73 should be sent to the api but with help of watchedCounty it can be dynamic as well
         const response = await axios.get(branchesURL);
         setBranches(response.data.response);
-        console.log(response.data.response);
       };
       getBranches(watchedCounty, watchedProvince);
     }

@@ -21,7 +21,7 @@ interface AuthState {
   };
   isLoading: boolean;
   error: null;
-  accessToken: null;
+  accessToken: any;
 }
 
 const initialState: AuthState = {
@@ -41,7 +41,7 @@ const initialState: AuthState = {
   },
   isLoading: false,
   error: null,
-  accessToken: null,
+  accessToken: undefined,
 };
 
 export const sendOtp = createAsyncThunk(
@@ -79,13 +79,13 @@ export const verifyOtp = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (userInfo: any, { getState, rejectWithValue }) => {
+  async (data: any, { getState, rejectWithValue }) => {
     try {
       const { auth }: any = getState();
       const response = await axios.post(
         "https://stage-api.sanaap.co/api/v2/app/DEY/agent/verification/signup/check_agency_code/ ",
         {
-          ...userInfo,
+          ...data,
         }
       );
       const { accessToken } = response.data;

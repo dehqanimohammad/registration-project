@@ -10,13 +10,9 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 function page() {
-  const accesstoken = useSelector((state: RootState) => state.auth.accessToken);
-  const userState = useSelector((state: RootState) => state.auth.userInfo);
-  console.log(accesstoken);
-  console.log(userState);
+  const RootState = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const [step, setStep] = useState<number>(1);
-  console.log(step);
 
   const handleNext = () => {
     setStep(step + 1);
@@ -24,8 +20,6 @@ function page() {
 
   const handleLoginSuccess = () => {
     console.log("you have a token you are logged in");
-    console.log(accesstoken);
-    router.push("/");
   };
   return (
     <>
